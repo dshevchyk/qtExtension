@@ -11,7 +11,7 @@ class AdMobImpl
 {
 public:
     AdMobImpl();
-
+    ~AdMobImpl();
     void setX(int x);
     void setY(int y);
     void setWidth(int width);

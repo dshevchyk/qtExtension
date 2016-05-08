@@ -10,6 +10,11 @@ AdMobImpl::AdMobImpl()
                                  QtAndroid::androidActivity().object<jobject>());//QAndroidJniObject::callStaticMethod<void> (factoryClassName,
                                                      //  "fibonacci");
 }
+AdMobImpl::~AdMobImpl()
+{
+    internal.callMethod<void>("removeFromParent");
+}
+
 void AdMobImpl::setX(int x)
 {
     internal.callMethod<void>("setX", "(I)V", x);

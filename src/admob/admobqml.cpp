@@ -17,7 +17,9 @@ AdMobQml::AdMobQml(QQuickItem *parent):
     connect(this, SIGNAL(widthChanged()), this, SLOT(slotOnWidthChanged()));
     connect(this, SIGNAL(heightChanged()), this, SLOT(slotOnHeightChanged()));
     connect(this, SIGNAL(visibleChanged()), this, SLOT(slotOnVisibilityChanged()));
-
+    slotOnWidthChanged();
+    slotOnHeightChanged();
+    slotOnVisibilityChanged();
 }
 
 AdMobQml::~AdMobQml()
@@ -46,6 +48,9 @@ void AdMobQml::slotParentChanged()
         connect(item, SIGNAL(yChanged()), this, SLOT(slotOnYChanged()));
         item = item->parentItem();
     }
+    slotOnXChanged();
+    slotOnYChanged();
+    slotOnVisibilityChanged();
 }
 
 void AdMobQml::slotOnXChanged()
@@ -73,6 +78,8 @@ void AdMobQml::slotOnHeightChanged()
 void AdMobQml::slotOnVisibilityChanged()
 {
     qDebug("slotOnVisibilityChanged");
-    impl_->setVisibility(isVisible());
-
+    if(this->parentItem())
+        impl_->setVisibility(isVisible());
+    else
+        impl_->setVisibility(false);
 }
