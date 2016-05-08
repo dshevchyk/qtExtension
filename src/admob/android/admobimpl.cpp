@@ -37,3 +37,17 @@ void AdMobImpl::setVisibility(bool visible)
 {
     internal.callMethod<void>("setVisibility", "(B)V", visible);
 }
+void AdMobImpl::setAdUnitId(const QString& adUnitId)
+{
+
+    qDebug(adUnitId.toStdString().c_str());
+    jstring jAdUnitId = QAndroidJniObject::fromString(adUnitId).object<jstring>();
+    internal.callMethod<void>("setAdUnitId", "(Ljava/lang/String;)V", QAndroidJniObject::fromString(adUnitId).object<jstring>());
+
+}
+
+void AdMobImpl::setAdSize(int adSize)
+{
+    qDebug("c++ setAdSize called");
+    internal.callMethod<void>("setAdSize", "(I)V", adSize);
+}

@@ -1,22 +1,18 @@
 #include "admobqml.h"
 #include "admobimpl.h"
 
-#include <iostream>
 AdMobQml::AdMobQml(QQuickItem *parent):
     QQuickItem(parent),
     impl_(new AdMobImpl())
 {
-    setMessage("Hello, dimas");
-    // By default, QQuickItem does not draw anything. If you subclass
-    // QQuickItem to create a visual item, you will need to uncomment the
-    // following line and re-implement updatePaintNode()
-
-    // setFlag(ItemHasContents, true);
-
     connect(this, SIGNAL(parentChanged(QQuickItem *)), this, SLOT(slotParentChanged()));
     connect(this, SIGNAL(widthChanged()), this, SLOT(slotOnWidthChanged()));
     connect(this, SIGNAL(heightChanged()), this, SLOT(slotOnHeightChanged()));
     connect(this, SIGNAL(visibleChanged()), this, SLOT(slotOnVisibilityChanged()));
+    connect(this, SIGNAL(adUnitIdChanged()), this, SLOT(slotOnAdUnitIdChanged()));
+    connect(this, SIGNAL(adSizeChanged()), this, SLOT(slotOnAdSizeChanged()));
+
+    //manual update
     slotOnWidthChanged();
     slotOnHeightChanged();
     slotOnVisibilityChanged();
@@ -25,6 +21,28 @@ AdMobQml::AdMobQml(QQuickItem *parent):
 AdMobQml::~AdMobQml()
 {
     delete impl_;
+}
+
+//can only be set once
+void AdMobQml::setAdSize(int size) {
+    if (size != adSize_) {
+        adSize_ = size;
+        emit adSizeChanged();
+    }
+}
+int AdMobQml::adSize() const {
+    return adSize_;
+}
+
+//can only be set once
+void AdMobQml::setAdUnitId(const QString &a) {
+    if (a != adUnitId_) {
+        adUnitId_ = a;
+        emit adUnitIdChanged();
+    }
+}
+QString AdMobQml::adUnitId() const {
+    return adUnitId_;
 }
 QPointF AdMobQml::absolutePosition() {
         QPointF p(0, 0);
@@ -82,4 +100,17 @@ void AdMobQml::slotOnVisibilityChanged()
         impl_->setVisibility(isVisible());
     else
         impl_->setVisibility(false);
+}
+void AdMobQml::slotOnAdUnitIdChanged()
+{
+
+    qDebug("slotOnAdUnitIdChanged");
+    qDebug(adUnitId_.toStdString().c_str());
+    impl_->setAdUnitId(adUnitId_);
+}
+
+void AdMobQml::slotOnAdSizeChanged()
+{
+    impl_->setAdSize(adSize_);
+
 }

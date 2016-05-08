@@ -17,7 +17,8 @@ public:
     void setWidth(int width);
     void setHeight(int height);
     void setVisibility(bool visible);
-
+    void setAdUnitId(const QString& adUnitId);
+    void setAdSize(int adSize);
 #ifdef Q_OS_ANDROID
 private:
     QAndroidJniObject internal;
