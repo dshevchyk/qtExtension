@@ -7,6 +7,10 @@
 #include <QAndroidJniObject>
 #endif
 
+#if defined(__OBJC__)
+@class QtAdMobBannerDelegate;
+#endif
+
 class AdMobImpl
 {
 public:
@@ -19,9 +23,14 @@ public:
     void setVisibility(bool visible);
     void setAdUnitId(const QString& adUnitId);
     void setAdSize(int adSize);
-#ifdef Q_OS_ANDROID
 private:
+#ifdef Q_OS_ANDROID
     QAndroidJniObject internal;
+
+#endif
+
+#if defined(__OBJC__)
+    QtAdMobBannerDelegate* m_AdMob;
 #endif
 };
 
